@@ -338,14 +338,17 @@ class PyPDFOCR(object):
             :rtype: filename string
         """
         print ("Starting conversion of %s" % pdf_filename)
-        try:
-            # Make the images for Tesseract
-            img_dpi, glob_img_filename = self.gs.make_img_from_pdf(pdf_filename)
+        filename, file_extension = os.path.splitext(pdf_filename.lower())
+        if file_extension == "jpeg" || file_extension == "jpg":
+            fns = glob.glob(pdf_filename)
+        else:
+            try:
+                # Make the images for Tesseract
+                img_dpi, glob_img_filename = self.gs.make_img_from_pdf(pdf_filename)
 
-            fns = glob.glob(glob_img_filename)
-        
-        except Exception:
-            raise
+                fns = glob.glob(glob_img_filename)
+            except Exception:
+                raise
 
         try:
             # Preprocess
